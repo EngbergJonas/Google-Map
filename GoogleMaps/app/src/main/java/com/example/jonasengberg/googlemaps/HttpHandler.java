@@ -3,53 +3,54 @@ package com.example.jonasengberg.googlemaps;
 
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
 public class HttpHandler {
 
-    public HttpHandler()
+    public String readUrl(String urlString) throws IOException
     {
-    }
+        String data = "";
+        InputStream inputStream = null;
+        HttpURLConnection urlConnection = null;
 
-    public String getHTTPData(String requestUrl)
-    {
-        URL url;
-        String response = "";
         try
         {
-            url = new URL(requestUrl);
-            HttpURLConnection con = (HttpURLConnection)url.openConnection();
-            con.setRequestMethod("GET");
-            con.setReadTimeout(15000);
-            con.setConnectTimeout(15000);
-            con.setDoInput(true);
-            con.setDoOutput(true);
-            con.setRequestProperty("Contect-type", "application/x-www-form-urlencoded");
+            URL url = new URL(urlString);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.connect();
 
-            int responseCode = con.getResponseCode();
-            if(responseCode == HTTP_OK)
-            {
-                String line;
-                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            inputStream = urlConnection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuffer sb = new StringBuffer();
 
-                while((line = br.readLine()) != null)
-                    response += line;
-            }
-            else
+            String line = "";
+
+            while((line = br.readLine()) != null)
             {
-                response = "";
+                sb.append(line);
             }
+
+            data = sb.toString();
+            br.close();
         }
-        catch(Exception e)
-        {
+        catch (MalformedURLException e) {
+            e.printStackTrace();
+        }catch (IOException e) {
             e.printStackTrace();
         }
-        return response;
+        finally {
+            inputStream.close();
+            urlConnection.disconnect();
+        }
+        return data;
     }
-
 }
+
 
