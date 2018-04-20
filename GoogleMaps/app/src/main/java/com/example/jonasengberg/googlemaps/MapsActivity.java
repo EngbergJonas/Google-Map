@@ -63,8 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //for google places
     private String url = "";
-    int PROXIMITY_RADIUS = 10000;
-    double latitude, longitude;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -167,21 +166,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void getDistance()
-    {
-        mMap.clear();
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(new LatLng(endLat, endLng));
-        markerOptions.title("Destination");
-
-        float results[] = new float[1];
-        Location.distanceBetween(myLat, myLng, endLat, endLng, results);
-        double roundOff = Math.round(results[0] * 100.0) / 100.0;
-        markerOptions.snippet("Distance: " + roundOff);
-        mMap.addMarker(markerOptions);
-    }
-
-
     private void init() {
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -199,7 +183,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
                 return false;
             }
         });
@@ -230,6 +213,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private String getDirectionsUrl()
     {
+        //WORKS
         //https://maps.googleapis.com/maps/api/directions/json?origin=Toronto&destination=Montreal&key=AIzaSyBIIKF-Ab-ETvAjZftPko90Y1YGP7Bk608
         StringBuilder googleDirectionsUrl = new StringBuilder("https://maps.googleapis.com/maps/api/directions/json?");
         googleDirectionsUrl.append("origin="+myLat+","+myLng);
@@ -241,9 +225,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private String getPositionUrl()
     {
-        StringBuilder positionUrl = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?address=");
+        //WORKS
+        //https://maps.googleapis.com/maps/api/geocode/json?address=Helsinki&key=AIzaSyA1ehJ4zwv4imTO3cgjgbjR6R0BlYNUKoE
+        StringBuilder positionUrl = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?");
         positionUrl.append("address="+searchText.getText().toString());
-        positionUrl.append("&key"+"AIzaSyA1ehJ4zwv4imTO3cgjgbjR6R0BlYNUKoE");
+        positionUrl.append("&key="+"AIzaSyA1ehJ4zwv4imTO3cgjgbjR6R0BlYNUKoE");
 
         return getDirectionsUrl();
     }

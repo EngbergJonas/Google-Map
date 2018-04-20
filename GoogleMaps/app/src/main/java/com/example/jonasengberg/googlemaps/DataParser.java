@@ -43,6 +43,8 @@ public class DataParser {
         return getDuration(jsonArray);
     }
 
+    //----------------------------------------------------------------------------------------------------------------------------------------//
+
     //FOR LAT&LNG
     private HashMap<String, String> getPosition(JSONArray googlePositionJson)
     {
@@ -53,13 +55,17 @@ public class DataParser {
         Log.d("json response", googlePositionJson.toString());
         try
         {
-            latitude = googlePositionJson.getJSONObject(0).getJSONObject("location").getJSONObject("lat").toString();
-            longitude = googlePositionJson.getJSONObject(0).getJSONObject("location").getJSONObject("lng").toString();
+
+            latitude = googlePositionJson.getJSONObject(0).getJSONObject("geometry").getJSONObject("location")
+                    .getJSONObject("lat").toString();
+            longitude = googlePositionJson.getJSONObject(0).getJSONObject("geometry").getJSONObject("location")
+                    .getJSONObject("lng").toString();
 
             positionMap.put("latitude", latitude);
             positionMap.put("longitude", longitude);
+
         }
-        catch(JSONException e)
+        catch(Exception e)
         {
             e.printStackTrace();
         }
@@ -73,7 +79,9 @@ public class DataParser {
 
         try {
             jsonObject = new JSONObject(jsonData);
-            jsonArray = jsonObject.getJSONArray("results").getJSONObject(1).getJSONArray("geometry");
+            jsonArray = jsonObject.getJSONArray("results");
+            //lng = ((JSONArray) jsonObj.get("results")).getJSONObject(0).getJSONObject("geometry")
+            //.getJSONObject("location").getDouble("lng");
         } catch (JSONException e) {
             e.printStackTrace();
         }
