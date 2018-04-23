@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -161,7 +162,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 dataTransfer = new Object[2];
                 url = getDirectionsUrl();
-                GetDestination getDestination = new GetDestination(MapsActivity.this);
+                GetData getDestination = new GetData(MapsActivity.this);
                 dataTransfer[0] = mMap;
                 dataTransfer[1] = url;
                 getDestination.execute(dataTransfer);
@@ -174,7 +175,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v)
             {
-                myLocation();
+               myLocation();
             }
         });
     }
@@ -188,6 +189,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startActivity(intent);
     }
 
+    public ArrayList<String> noteList(HashMap<String, String> someMap)
+    {
+        return null;
+    }
 
     //read the directions url
     private String getDirectionsUrl()

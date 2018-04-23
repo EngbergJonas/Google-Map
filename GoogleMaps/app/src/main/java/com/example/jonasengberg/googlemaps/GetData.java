@@ -14,7 +14,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class GetDestination extends AsyncTask<Object, String, String>{
+public class GetData extends AsyncTask<Object, String, String>{
 
     private GoogleMap mMap;
     private String url;
@@ -26,7 +26,7 @@ public class GetDestination extends AsyncTask<Object, String, String>{
 
     private static Context context;
 
-    GetDestination(Context c){
+    GetData(Context c){
         context = c;
     }
 
@@ -38,7 +38,7 @@ public class GetDestination extends AsyncTask<Object, String, String>{
     {
         DataParser parser = new DataParser();
         HashMap<String, String> directionList= null;
-        directionList = parser.parseDirections(jsonData);
+        directionList = parser.getDirections(jsonData);
         duration = directionList.get("duration");
         distance = directionList.get("distance");
         title = directionList.get("start_address");
@@ -49,7 +49,7 @@ public class GetDestination extends AsyncTask<Object, String, String>{
     {
         DataParser parser = new DataParser();
         HashMap<String, Double> positionList = null;
-        positionList = parser.parseLatLng(jsonData);
+        positionList = parser.getCoordinates(jsonData);
         latitude = positionList.get("lat");
         longitude = positionList.get("lng");
         endLatitude = positionList.get("endLat");

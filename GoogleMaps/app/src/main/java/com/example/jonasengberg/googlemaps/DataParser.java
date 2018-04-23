@@ -12,7 +12,7 @@ import java.util.Iterator;
 public class DataParser {
 
     //Parse the Direction, Distance and Title from the UrlRequest
-    private HashMap<String, String> getDuration(JSONArray googleDirectionsJson) {
+    private HashMap<String, String> parseDirections(JSONArray googleDirectionsJson) {
         HashMap<String, String> googleDirectionsMap = new HashMap<>();
         String duration = "";
         String distance = "";
@@ -33,7 +33,7 @@ public class DataParser {
         return googleDirectionsMap;
     }
 
-    public HashMap<String, String> parseDirections(String jsonData) {
+    public HashMap<String, String> getDirections(String jsonData) {
         JSONArray jsonArray = null;
         JSONObject jsonObject;
 
@@ -44,13 +44,13 @@ public class DataParser {
             e.printStackTrace();
         }
 
-        return getDuration(jsonArray);
+        return parseDirections(jsonArray);
     }
 
     //----------------------------------------------------------------------------------------------//
 
     //Parse the Latitude & Longitude from the Request
-    private HashMap<String, Double> getLatLng(JSONArray googleLatLngJson) {
+    private HashMap<String, Double> parseCoordinates(JSONArray googleLatLngJson) {
         HashMap<String, Double> googleLatLngMap = new HashMap<>();
         Double latitude = 0.0;
         Double longitude = 0.0;
@@ -76,7 +76,7 @@ public class DataParser {
         return googleLatLngMap;
     }
 
-    public HashMap<String, Double> parseLatLng(String jsonData) {
+    public HashMap<String, Double> getCoordinates(String jsonData) {
         JSONArray jsonArray = null;
         JSONObject jsonObject;
 
@@ -87,7 +87,7 @@ public class DataParser {
             e.printStackTrace();
         }
 
-        return getLatLng(jsonArray);
+        return parseCoordinates(jsonArray);
     }
 }
 
