@@ -7,22 +7,26 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class DataParser {
 
-    //FOR DUR&DIST
+    //Parse the Direction, Distance and Title from the UrlRequest
     private HashMap<String, String> getDuration(JSONArray googleDirectionsJson) {
         HashMap<String, String> googleDirectionsMap = new HashMap<>();
         String duration = "";
         String distance = "";
+        String title = "";
 
-        Log.d("json response", googleDirectionsJson.toString());
         try {
             duration = googleDirectionsJson.getJSONObject(0).getJSONObject("duration").getString("text");
             distance = googleDirectionsJson.getJSONObject(0).getJSONObject("distance").getString("text");
+            title = googleDirectionsJson.getJSONObject(0).getString("start_address");
 
             googleDirectionsMap.put("duration", duration);
             googleDirectionsMap.put("distance", distance);
+            googleDirectionsMap.put("start_address", title);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -43,49 +47,47 @@ public class DataParser {
         return getDuration(jsonArray);
     }
 
-    //----------------------------------------------------------------------------------------------------------------------------------------//
+    //----------------------------------------------------------------------------------------------//
 
-    //FOR LAT&LNG
-    private HashMap<String, String> getPosition(JSONArray googlePositionJson)
-    {
-        HashMap<String, String> positionMap = new HashMap<>();
-        String latitude;
-        String longitude;
+    //Parse the Latitude & Longitude from the Request
+    private HashMap<String, Double> getLatLng(JSONArray googleLatLngJson) {
+        HashMap<String, Double> googleLatLngMap = new HashMap<>();
+        Double latitude = 0.0;
+        Double longitude = 0.0;
+        Double endLatitude = 0.0;
+        Double endLongitude = 0.0;
 
-        Log.d("json response", googlePositionJson.toString());
-        try
-        {
+        try {
+            latitude = googleLatLngJson.getJSONObject(0).getJSONObject("start_location").getDouble("lat");
+            longitude = googleLatLngJson.getJSONObject(0).getJSONObject("start_location").getDouble("lng");
+            endLatitude = googleLatLngJson.getJSONObject(0).getJSONObject("end_location").getDouble("lat");
+            endLongitude = googleLatLngJson.getJSONObject(0).getJSONObject("end_location").getDouble("lng");
 
-            latitude = googlePositionJson.getJSONObject(0).getJSONObject("geometry").getJSONObject("location")
-                    .getJSONObject("lat").toString();
-            longitude = googlePositionJson.getJSONObject(0).getJSONObject("geometry").getJSONObject("location")
-                    .getJSONObject("lng").toString();
+            googleLatLngMap.put("lat", latitude);
+            googleLatLngMap.put("lng", longitude);
+            googleLatLngMap.put("endLat", endLatitude);
+            googleLatLngMap.put("endLng", endLongitude);
 
-            positionMap.put("latitude", latitude);
-            positionMap.put("longitude", longitude);
+            //Log.d("json response", googleLatLngMap.toString());
 
-        }
-        catch(Exception e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-        return positionMap;
+        return googleLatLngMap;
     }
 
-    public HashMap<String, String> parsePositions(String jsonData) {
-
+    public HashMap<String, Double> parseLatLng(String jsonData) {
         JSONArray jsonArray = null;
         JSONObject jsonObject;
 
         try {
             jsonObject = new JSONObject(jsonData);
-            jsonArray = jsonObject.getJSONArray("results");
-            //lng = ((JSONArray) jsonObj.get("results")).getJSONObject(0).getJSONObject("geometry")
-            //.getJSONObject("location").getDouble("lng");
+            jsonArray = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return getPosition(jsonArray);
+
+        return getLatLng(jsonArray);
     }
 }
 
