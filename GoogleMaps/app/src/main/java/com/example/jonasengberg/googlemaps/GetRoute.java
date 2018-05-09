@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GetRoute extends AsyncTask<String, Void, Route>
 {
@@ -30,8 +31,8 @@ public class GetRoute extends AsyncTask<String, Void, Route>
             String polyString = response.getString("points");
 
             LatLng startPos = new LatLng(jsonObject.getJSONObject("start_location").getDouble("lat"), jsonObject.getJSONObject("start_location").getDouble("lng"));
-            String title = (jsonObject.getString("start_address"));
-            String distance = (jsonObject.getJSONObject("distance").getString("text"));
+            String title = jsonObject.getString("start_address");
+            String distance = jsonObject.getJSONObject("distance").getString("text");
             PolylineDecoder polylineDecoder = new PolylineDecoder();
             ArrayList<LatLng> points = polylineDecoder.decodePolyLine(polyString);
 

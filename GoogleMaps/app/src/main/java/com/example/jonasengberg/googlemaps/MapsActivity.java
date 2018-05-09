@@ -50,7 +50,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public GoogleMap mMap;
     private EditText searchText;
     private ImageView locateMe;
-    private EditText searchText1;
 
     //vars
     private double myLat, myLng;
@@ -78,7 +77,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         searchText = findViewById(R.id.input_search);
-        searchText1 = findViewById(R.id.input_search1);
         locateMe = findViewById(R.id.ic_getlocation);
         getLocationPermission();
         init();
@@ -214,7 +212,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //Get destination between two points
     private void init() {
 
-        searchText1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 addRoute();
@@ -243,7 +241,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             String title = routeRequest.getTitle();
             String distance = routeRequest.getDistance();
             ArrayList<LatLng> polyLines = routeRequest.getPolyLines();
-
             PolylineOptions polylineOptions = new PolylineOptions();
             for(int i = 0; i < polyLines.size(); i++)
             {
@@ -307,7 +304,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(startMarker);
             mMap.addPolyline(polylineOptions);
             searchText.getText().clear();
-            searchText1.getText().clear();
         }
 
         catch(Exception e)
@@ -330,7 +326,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         StringBuilder urlString = new StringBuilder("https://maps.googleapis.com/maps/api/directions/json?");
 
         urlString.append("origin=" + searchText.getText().toString());
-        urlString.append("&destination=" + searchText1.getText().toString());
+        urlString.append("&destination=" + searchText.getText().toString());
         urlString.append("&waypoints=optimize:true|"+waypointString);
         urlString.append("&key=AIzaSyBIIKF-Ab-ETvAjZftPko90Y1YGP7Bk608");
         return urlString.toString();
