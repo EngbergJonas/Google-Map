@@ -3,42 +3,46 @@ package com.example.jonasengberg.googlemaps;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class NoteBookActivity extends AppCompatActivity {
 
-    public ListView routeList;
-    ArrayList<String> list = new ArrayList<>();
+    ListView listView;
+    ArrayList<String> routeList = new ArrayList<>();
+    ArrayList<Route> routes;
+    InputOutput io;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        io = new InputOutput();
+        routes = io.loadFile(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_book);
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(MapsActivity.EXTRA_MESSAGE);
 
-        routeList = (ListView) findViewById(R.id.routeList);
+        listView = (ListView) findViewById(R.id.routeList);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-
-        routeList.setAdapter(adapter);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, routeList);
+        listView.setAdapter(adapter);
         updateList();
     }
 
     public void updateList()
     {
-        Bundle bundle = getIntent().getExtras();
         Intent intent = getIntent();
-        if(bundle != null)
-        {
-            String message = intent.getStringExtra(MapsActivity.EXTRA_MESSAGE);
-            list.add(message);
-            System.out.println("TÄSSÄ DEBUGGAS" + list.get(0));
-        }
+        String message = intent.getStringExtra(MapsActivity.EXTRA_MESSAGE);
+        routeList.add(message);
+        System.out.println("DEBUG: " + routeList.get(0));
+
     }
+
+
 }

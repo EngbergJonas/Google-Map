@@ -92,7 +92,7 @@
         android:layout_below="@id/relLayout1"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:scaleType="centerCrop"
         android:id="@+id/ic_getlocation"
         android:src="@drawable/ic_getlocation"/>
@@ -104,9 +104,21 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/relLayout1"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="70dp"
         android:onClick="addNote"
         android:scaleType="centerCrop"
         android:background="@drawable/ic_add"/>
+
+    <Button
+        android:id="@+id/ic_remove"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/relLayout1"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/ic_remove"
+        android:onClick="removeNotes"
+        android:scaleType="centerCrop" />
 
 </RelativeLayout>
